@@ -1,6 +1,0 @@
-[submodule "k8s/cloud-native-javaee"]
-	path = k8s/cloud-native-javaee
-	url = https://github.com/xQuarz/cloud-native-javaee.git
-[submodule "k8s/tyk-helm-chart"]
-	path = k8s/tyk-helm-chart
-	url = https://github.com/xQuarz/tyk-helm-chart
