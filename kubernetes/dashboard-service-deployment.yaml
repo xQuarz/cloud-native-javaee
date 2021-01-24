@@ -20,7 +20,7 @@ spec:
         prometheus.io/port: '8080'
     spec:
       containers:
-      - image: lreimer/dashboard-service:1.2
+      - image: xquarz/dashboard-service
         name: dashboard-service
         env:
         - name: "PORT"
