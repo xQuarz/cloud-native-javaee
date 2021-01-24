@@ -2,32 +2,31 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: process-service
-    hazelcast: enabled
-  name: process-service
+    io.kompose.service: dashboard-service
+  name: dashboard-service
 spec:
   selector:
     matchLabels:
-      io.kompose.service: process-service
+      io.kompose.service: dashboard-service
   replicas: 1
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        io.kompose.service: process-service
-        hazelcast: enabled
+        io.kompose.service: dashboard-service
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '8080'
     spec:
       containers:
-      - image: xquarz/process-service:v1
-        imagePullPolicy: Always
-        name: process-service
+      - image: lreimer/dashboard-service:1.2
+        name: dashboard-service
         env:
+        - name: "PORT"
+          value: "8080"
         - name: JAEGER_SERVICE_NAME
-          value: "process-service"
+          value: "dashboard-service"
         - name: JAEGER_AGENT_HOST
           valueFrom:
             fieldRef:
@@ -40,7 +39,6 @@ spec:
           value: "1"
         ports:
         - containerPort: 8080
-        - containerPort: 5701
         resources:
           requests:
             memory: "400Mi"
@@ -60,12 +58,3 @@ spec:
             port: 8080
           initialDelaySeconds: 90
           periodSeconds: 5
-        volumeMounts:
-        - mountPath: /process-service/config/
-          name: process-service-config-volume
-          readOnly: true
-      restartPolicy: Always
-      volumes:
-      - name: process-service-config-volume
-        configMap:
-          name: process-service-config

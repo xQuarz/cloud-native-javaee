@@ -2,32 +2,31 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: process-service
+    io.kompose.service: billing-service
     hazelcast: enabled
-  name: process-service
+  name: billing-service
 spec:
   selector:
     matchLabels:
-      io.kompose.service: process-service
+      io.kompose.service: billing-service
   replicas: 1
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        io.kompose.service: process-service
+        io.kompose.service: billing-service
         hazelcast: enabled
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '8080'
     spec:
       containers:
-      - image: xquarz/process-service:v1
-        imagePullPolicy: Always
-        name: process-service
+      - image: lreimer/billing-service:2.1
+        name: billing-service
         env:
         - name: JAEGER_SERVICE_NAME
-          value: "process-service"
+          value: "billing-service"
         - name: JAEGER_AGENT_HOST
           valueFrom:
             fieldRef:
@@ -61,11 +60,11 @@ spec:
           initialDelaySeconds: 90
           periodSeconds: 5
         volumeMounts:
-        - mountPath: /process-service/config/
-          name: process-service-config-volume
+        - mountPath: /billing-service/config/
+          name: billing-service-config-volume
           readOnly: true
       restartPolicy: Always
       volumes:
-      - name: process-service-config-volume
+      - name: billing-service-config-volume
         configMap:
-          name: process-service-config
+          name: billing-service-config

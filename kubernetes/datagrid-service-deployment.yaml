@@ -2,32 +2,31 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: process-service
+    io.kompose.service: datagrid-service
     hazelcast: enabled
-  name: process-service
+  name: datagrid-service
 spec:
   selector:
     matchLabels:
-      io.kompose.service: process-service
-  replicas: 1
+      io.kompose.service: datagrid-service
+  replicas: 3
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        io.kompose.service: process-service
+        io.kompose.service: datagrid-service
         hazelcast: enabled
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '8080'
     spec:
       containers:
-      - image: xquarz/process-service:v1
-        imagePullPolicy: Always
-        name: process-service
+      - image: lreimer/datagrid-service:2.1
+        name: datagrid-service
         env:
         - name: JAEGER_SERVICE_NAME
-          value: "process-service"
+          value: "datagrid-service"
         - name: JAEGER_AGENT_HOST
           valueFrom:
             fieldRef:
@@ -52,20 +51,20 @@ spec:
           httpGet:
             path: /api/application.wadl
             port: 8080
-          initialDelaySeconds: 180
+          initialDelaySeconds: 120
           periodSeconds: 5
         readinessProbe:
           httpGet:
-            path: /health
+            path: /api/application.wadl
             port: 8080
-          initialDelaySeconds: 90
+          initialDelaySeconds: 60
           periodSeconds: 5
         volumeMounts:
-        - mountPath: /process-service/config/
-          name: process-service-config-volume
+        - mountPath: /opt/payara/config/
+          name: datagrid-service-config-volume
           readOnly: true
       restartPolicy: Always
       volumes:
-      - name: process-service-config-volume
+      - name: datagrid-service-config-volume
         configMap:
-          name: process-service-config
+          name: datagrid-service-config

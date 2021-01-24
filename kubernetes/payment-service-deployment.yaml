@@ -2,32 +2,31 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: process-service
+    io.kompose.service: payment-service
     hazelcast: enabled
-  name: process-service
+  name: payment-service
 spec:
   selector:
     matchLabels:
-      io.kompose.service: process-service
+      io.kompose.service: payment-service
   replicas: 1
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        io.kompose.service: process-service
+        io.kompose.service: payment-service
         hazelcast: enabled
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: '8080'
     spec:
       containers:
-      - image: xquarz/process-service:v1
-        imagePullPolicy: Always
-        name: process-service
+      - image: lreimer/payment-service:2.1
+        name: payment-service
         env:
         - name: JAEGER_SERVICE_NAME
-          value: "process-service"
+          value: "payment-service"
         - name: JAEGER_AGENT_HOST
           valueFrom:
             fieldRef:
@@ -61,11 +60,11 @@ spec:
           initialDelaySeconds: 90
           periodSeconds: 5
         volumeMounts:
-        - mountPath: /process-service/config/
-          name: process-service-config-volume
+        - mountPath: /payment-service/config/
+          name: payment-service-config-volume
           readOnly: true
       restartPolicy: Always
       volumes:
-      - name: process-service-config-volume
+      - name: payment-service-config-volume
         configMap:
-          name: process-service-config
+          name: payment-service-config
