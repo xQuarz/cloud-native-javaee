@@ -17,7 +17,7 @@ spec:
         prometheus.io/port: '8080'
     spec:
       containers:
-      - image: s6er/dashboard-service:0.1
+      - image: quarz/dashboard-service
         imagePullPolicy: Always
         name: dashboard-service
         env:
