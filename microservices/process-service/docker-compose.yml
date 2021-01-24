@@ -15,7 +15,7 @@ services:
 
   process-service:
     build: .
-    image: xquarz/process-service
+    image: xquarz/process-service:v1
     mem_limit: 600m
     environment:
       - org_apache_deltaspike_ProjectStage=Development

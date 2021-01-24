@@ -1,13 +1,10 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
     io.kompose.service: dashboard-service
   name: dashboard-service
 spec:
-  selector:
-    matchLabels:
-      io.kompose.service: dashboard-service
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -20,11 +17,10 @@ spec:
         prometheus.io/port: '8080'
     spec:
       containers:
-      - image: xquarz/dashboard-service
+      - image: s6er/dashboard-service:0.1
+        imagePullPolicy: Always
         name: dashboard-service
         env:
-        - name: "PORT"
-          value: "8080"
         - name: JAEGER_SERVICE_NAME
           value: "dashboard-service"
         - name: JAEGER_AGENT_HOST

@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
@@ -6,9 +6,6 @@ metadata:
     hazelcast: enabled
   name: process-service
 spec:
-  selector:
-    matchLabels:
-      io.kompose.service: process-service
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -22,7 +19,7 @@ spec:
         prometheus.io/port: '8080'
     spec:
       containers:
-      - image: xquarz/process-service
+      - image: xquarz/process-service:v1
         imagePullPolicy: Always
         name: process-service
         env:

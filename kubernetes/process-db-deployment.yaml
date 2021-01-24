@@ -1,13 +1,10 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   labels:
     io.kompose.service: process-db
   name: process-db
 spec:
-  selector:
-    matchLabels:
-      io.kompose.service: process-db
   replicas: 1
   template:
     metadata:
