@@ -1,10 +1,13 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     io.kompose.service: dashboard-service
   name: dashboard-service
 spec:
+  selector:
+    matchLabels:
+      io.kompose.service: dashboard-service
   replicas: 1
   strategy:
     type: RollingUpdate
