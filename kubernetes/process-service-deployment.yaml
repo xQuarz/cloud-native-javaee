@@ -19,7 +19,7 @@ spec:
         prometheus.io/port: '8080'
     spec:
       containers:
-      - image: xquarz/process-service:v1
+      - image: xquarz/process-service
         imagePullPolicy: Always
         name: process-service
         env:
