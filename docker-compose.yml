@@ -1,6 +1,29 @@
 version: "2.3"
 
 services:
+  keycloak:
+    image: jboss/keycloak:13.0.0
+    environment:
+      - DB_VENDOR=h2
+      - DB_DATABASE=keycloak
+      - DB_USER=tisadmin
+      - DB_PASSWORD=tisadmin
+      - KEYCLOAK_IMPORT=/tmp/showcase-realm.json
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      #- JAVA_OPTS_APPEND=-Dkeycloak.profile.feature.upload_scripts=enabled
+      - JAEGER_SERVICE_NAME=keycloak-service
+      - JEAGER_AGENT_HOST=jaeger
+      - JAEGER_REPORTER_LOG_SPANS=true
+      - JAEGER_SAMPLER_TYPE=const
+      - JEAGER_SAMPLER_PARAM=1
+    volumes:
+      - ./../keycloak-helm/showcase-realm.json:/tmp/showcase-realm.json
+    ports:
+    - "3000:8080"
+    networks:
+      - jee7net
+
   portainer:
     image: portainer/portainer
     mem_limit: 50m
