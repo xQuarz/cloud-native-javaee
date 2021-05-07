@@ -1,0 +1,8 @@
+{
+  "realm": "Showcase",
+  "auth-server-url": "http://localhost:3000/auth/",
+  "ssl-required": "external",
+  "resource": "dashboard",
+  "public-client": true,
+  "confidential-port": 0
+}
