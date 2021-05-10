@@ -1,6 +1,24 @@
 version: "2.3"
 
 services:
+  keycloak:
+    image: jboss/keycloak:13.0.0
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_IMPORT=/tmp/showcase-realm.json
+      - JAEGER_SERVICE_NAME=datagrid-service
+      - JAEGER_AGENT_HOST=jaeger
+      - JAEGER_REPORTER_LOG_SPANS=true
+      - JAEGER_SAMPLER_TYPE=const
+      - JAEGER_SAMPLER_PARAM=1
+    volumes:
+    - ./../keycloak-helm/showcase-realm.json:/tmp/showcase-realm.json
+    ports:
+      - "3000:8080"
+    networks:
+      - jee7net
+
   portainer:
     image: portainer/portainer:linux-amd64-1.15.2
     mem_limit: 50m
@@ -43,7 +61,7 @@ services:
 
   process-service:
     build: ./microservices/process-service
-    image: xquarz/process-service
+    image: lreimer/process-service:2.1
     mem_limit: 600m
     environment:
       - org_apache_deltaspike_ProjectStage=Development
@@ -128,6 +146,7 @@ services:
       - "18084:8080"  # the HTTP endpoint
     depends_on:
       - message-queue
+      - keycloak
     networks:
       - jee7net
 
