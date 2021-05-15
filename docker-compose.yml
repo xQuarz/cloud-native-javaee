@@ -6,6 +6,9 @@ services:
     environment:
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
+      - PROXY_ADDRESS_FORWARDING=true
+      - KEYCLOAK_FRONTEND_URL=http://localhost:3000/auth
+      - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
       - KEYCLOAK_IMPORT=/tmp/showcase-realm.json
       - JAEGER_SERVICE_NAME=datagrid-service
       - JAEGER_AGENT_HOST=jaeger

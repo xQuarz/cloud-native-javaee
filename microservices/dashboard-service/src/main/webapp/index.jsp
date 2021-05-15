@@ -1,4 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="org.keycloak.KeycloakSecurityContext" %>
+
+<%
+    KeycloakSecurityContext keycloakSecurityContext = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+%>
 <!DOCTYPE html>
 <html class="js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface generatedcontent video audio localstorage sessionstorage webworkers applicationcache svg inlinesvg smil svgclippaths">
 <head>
@@ -49,6 +54,10 @@
             </div>
         </div>
     </div>
+
+<%--    <%@include file="include-logout.jsp"%>--%>
+
+    <h2>Hello, <%= keycloakSecurityContext.getIdToken().getName() %>. Have a nice day.</h2>
 
     <section class="s-anchor bg-white" id="arbeitsplatz">
         <div class="r-11 row" id="c23">

@@ -1,11 +1,11 @@
 {
   "realm": "Showcase",
-  "auth-server-url": "http://localhost:3000/auth/",
+  "auth-server-url": "http://keycloak:8080/auth",
   "ssl-required": "external",
   "resource": "dashboard",
   "verify-token-audience": true,
   "credentials": {
-    "secret": "b21dd324-4534-40f0-8291-0068b7cb7e9d"
+    "secret": "secret"
   },
   "use-resource-role-mappings": true,
   "confidential-port": 0
