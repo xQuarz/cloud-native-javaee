@@ -3,12 +3,15 @@ package de.qaware.oss.cloud.service.dashboard;
 import io.opentracing.contrib.cdi.Traced;
 import io.opentracing.contrib.jaxrs2.client.ClientTracingFeature;
 import org.eclipse.microprofile.faulttolerance.Timeout;
+import org.keycloak.KeycloakSecurityContext;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -23,6 +26,9 @@ public class ProcessServiceClient {
 
     private Client client;
     private WebTarget processService;
+
+    @Inject
+    HttpServletRequest request;
 
     @PostConstruct
     void initialize() {
@@ -43,10 +49,14 @@ public class ProcessServiceClient {
     @Timeout(value = 5, unit = ChronoUnit.SECONDS)
     @Traced
     public void send(String processId, String name, Long amount) {
+
+        KeycloakSecurityContext keycloakSecurityContext = (KeycloakSecurityContext) request.getAttribute(KeycloakSecurityContext.class.getName());
+
         JsonObject payload = Json.createObjectBuilder()
                 .add("processId", processId)
                 .add("name", name)
                 .add("amount", amount)
+                .add("user", keycloakSecurityContext.getIdToken().getName())
                 .build();
 
         Response response = processService.request().post(Entity.json(payload));
