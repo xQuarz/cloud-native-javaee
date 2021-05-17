@@ -64,7 +64,7 @@ services:
 
   process-service:
     build: ./microservices/process-service
-    image: lreimer/process-service:2.1
+    image: xquarz/process-service
     mem_limit: 600m
     environment:
       - org_apache_deltaspike_ProjectStage=Development
