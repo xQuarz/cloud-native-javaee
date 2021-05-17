@@ -4,6 +4,7 @@ import de.qaware.oss.cloud.service.process.domain.ProcessEvent;
 import de.qaware.oss.cloud.service.process.domain.ProcessStatusCache;
 import org.eclipse.microprofile.metrics.annotation.Timed;
 import org.eclipse.microprofile.opentracing.Traced;
+import org.keycloak.representations.IDToken;
 
 import javax.annotation.Resource;
 import javax.enterprise.concurrent.ManagedExecutorService;
@@ -43,14 +44,14 @@ public class ProcessResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Timed(unit = "milliseconds")
-    public void process(@Suspended AsyncResponse response, @NotNull JsonObject jsonObject) {
+    public void process(@Suspended AsyncResponse response, @NotNull JsonObject jsonObject, @NotNull IDToken idToken) {
         logger.log(Level.INFO, "POST new process {0}", jsonObject);
 
         response.setTimeout(10, TimeUnit.SECONDS);
         response.setTimeoutHandler((r) -> r.resume(Response.accepted().build()));
 
         executorService.execute(() -> {
-            ProcessEvent event = ProcessEvent.created(jsonObject);
+            ProcessEvent event = ProcessEvent.created(jsonObject, idToken);
             processEvent.fire(event);
 
             response.resume(Response.accepted(event).build());
