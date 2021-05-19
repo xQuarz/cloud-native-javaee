@@ -10,7 +10,7 @@ services:
       - KEYCLOAK_FRONTEND_URL=http://localhost:3000/auth
       - JAVA_OPTS_APPEND="-Dkeycloak.profile.feature.upload_scripts=enabled"
       - KEYCLOAK_IMPORT=/tmp/showcase-realm.json
-      - JAEGER_SERVICE_NAME=datagrid-service
+      - JAEGER_SERVICE_NAME=keycloak
       - JAEGER_AGENT_HOST=jaeger
       - JAEGER_REPORTER_LOG_SPANS=true
       - JAEGER_SAMPLER_TYPE=const
