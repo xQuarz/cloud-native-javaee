@@ -32,12 +32,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.keycloak/keycloak-servlet-filter-adapter
     compile group: 'org.keycloak', name: 'keycloak-servlet-filter-adapter', version: '13.0.0'
 
-    // https://mvnrepository.com/artifact/org.keycloak/keycloak-authz-client
-    implementation group: 'org.keycloak', name: 'keycloak-authz-client', version: '13.0.0'
-
-    // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-    compile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
-
     compileOnly 'org.projectlombok:lombok:1.16.18'
 
     activemq 'org.apache.activemq:activemq-rar:5.15.3@rar'
